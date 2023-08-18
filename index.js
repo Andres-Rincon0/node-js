@@ -33,6 +33,10 @@ fs.readFile('./txt/start.txt', 'utf-8', (err,data1)=>{
 console.log('will read file');
  */
 /////////////////////////////////////////////Server
+
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`,'utf-8');
+const dataObj = JSON.parse(data);
+
 const server = http.createServer((req, res)=>{
     console.log(req.url);
 
@@ -42,9 +46,17 @@ const server = http.createServer((req, res)=>{
         res.end('this is a overview! Bv')
     }else if(pathName === '/product'){
         res.end('this is a product! :v')
-    }else {
-        res.writeHead(404)
-        res.end('this port not found! ❌')
+    }else if(pathName==='/api'){
+        res.writeHead(200, {'Content-type': 'application/json'})
+        res.end(data);
+
+
+    } else {
+        res.writeHead(404,{
+            'Content-type':'text/html',
+            'my-own-header': 'blue label'
+        });
+        res.end('<h1>this port not found!<h1> ')
     }
 
 });
